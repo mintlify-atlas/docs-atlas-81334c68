@@ -59,6 +59,20 @@ Clother is a single statically-linked Go binary. It has **no runtime dependencie
 
 The installer downloads a pre-built release artifact for your platform and architecture. You do not need Go installed to use Clother.
 
+## Environment variables
+
+The following environment variables affect Clother's behavior:
+
+| Variable | Description |
+|---|---|
+| `CLOTHER_BIN` | Override the bin directory where launchers are installed |
+| `CLOTHER_CONFIG_DIR` | Override the config directory (default: `$XDG_CONFIG_HOME/clother`) |
+| `CLOTHER_DATA_DIR` | Override the data directory (default: `$XDG_DATA_HOME/clother`) |
+| `CLOTHER_CACHE_DIR` | Override the cache directory (default: `$XDG_CACHE_HOME/clother`) |
+| `CLOTHER_NO_UPDATE_CHECK` | Set to `1` to disable the automatic update check |
+| `CLOTHER_UPDATE_URL` | Override the update metadata URL (default: GitHub releases) |
+| `CLOTHER_RELEASE_BASE_URL` | Override the release artifact base URL used by the install script |
+
 ## Local release testing
 
 If you are building Clother from source and want to test the install script against a local release server, set `CLOTHER_RELEASE_BASE_URL` to point at your local HTTP server before running the installer:

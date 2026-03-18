@@ -17,10 +17,13 @@ Clother will prompt you for:
 
 | Field | Description |
 |---|---|
-| Name | A short identifier for the provider (used in the launcher name) |
+| Name | A short identifier for the provider (used in the launcher name, e.g. `myprovider` → `clother-myprovider`) |
 | Base URL | The Anthropic-compatible API base URL |
 | API key | Your API key for the provider |
-| Default model | The model ID to use by default |
+
+<Note>
+Custom providers do not have a built-in default model. Pass `--model <model-id>` each time you launch, or run `clother config <name>` after setup to adjust settings.
+</Note>
 
 After saving, the launcher is immediately available:
 
@@ -54,4 +57,6 @@ The endpoint you configure must be compatible with the Anthropic Messages API. C
 
 and then launches the Claude CLI, which sends requests to that endpoint.
 
-<Tip>Use `clother test` after configuring a custom provider to verify that the endpoint is reachable.</Tip>
+The provider name must match `^[a-z0-9_-]+$` — lowercase letters, digits, underscores, and hyphens only. The API key is stored in secrets.env under a variable derived from the name: for example, a provider named `myprovider` uses `MYPROVIDER_API_KEY`.
+
+<Tip>Use `clother test myprovider` after configuring a custom provider to verify that the endpoint is reachable.</Tip>

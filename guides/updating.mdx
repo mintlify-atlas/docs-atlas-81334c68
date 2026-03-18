@@ -3,20 +3,26 @@ title: "Updating Clother"
 description: "How to update Clother to the latest version and refresh all installed launchers."
 ---
 
-Updating Clother uses the same command as the initial install:
+To update Clother to the latest version, re-run the original install script. This downloads the newest release binary and installs it:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/jolehuit/clother/main/scripts/install.sh | bash
+```
+
+## What `clother install` does
+
+`clother install` is also used to repair or re-sync an existing installation. It copies the currently running binary to the bin directory and refreshes all symlinks:
+
+- Copies the current `clother` binary to your bin directory
+- Locates the real `claude` binary and preserves it as `claude-real` if needed
+- Refreshes all `clother-*` provider launcher symlinks
+- Refreshes the `claude` shim symlink used for resume compatibility
+- Normalizes any legacy configuration and secrets files
+- Removes obsolete legacy files
 
 ```bash
 clother install
 ```
-
-## What it does
-
-Running `clother install` performs the following in place:
-
-- Updates the `clother` binary in your bin directory
-- Refreshes all `clother-*` provider launcher symlinks
-- Refreshes the `claude` shim symlink used for resume compatibility
-- Normalizes any legacy configuration and secrets files
 
 When it completes, you will see a confirmation line showing where Clother is installed:
 
@@ -25,7 +31,7 @@ installed Clother to /home/yourname/.local/bin
 ```
 
 <Note>
-  If you installed Clother to a custom directory using `--bin-dir` or the `CLOTHER_BIN` environment variable, `clother install` will update that same directory.
+  If you installed Clother to a custom directory using `--bin-dir` or the `CLOTHER_BIN` environment variable, `clother install` will use that same directory.
 </Note>
 
 ## Checking the current version
@@ -35,3 +41,25 @@ After updating, run the following to confirm the installation and see the active
 ```bash
 clother status
 ```
+
+## Automatic update notifications
+
+Clother checks for new releases in the background (at most once every 24 hours). When a newer version is available, it prints a message to stderr before running:
+
+```
+Update available: Clother v3.1.0 (current v3.0.2). Run: clother install
+```
+
+To disable the update check, set the environment variable:
+
+```bash
+export CLOTHER_NO_UPDATE_CHECK=1
+```
+
+You can override the metadata URL (useful for self-hosted releases) with:
+
+```bash
+export CLOTHER_UPDATE_URL=https://your-server/latest.json
+```
+
+The update check cache is stored at `~/.cache/clother/update.json` (overridable with `CLOTHER_CACHE_DIR` or `XDG_CACHE_HOME`).

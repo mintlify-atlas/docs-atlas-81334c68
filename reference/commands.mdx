@@ -3,6 +3,26 @@ title: "Command reference"
 description: "Complete reference for all Clother CLI commands, launchers, and flags."
 ---
 
+## Global flags
+
+These flags are accepted by the `clother` management binary for all commands.
+
+| Flag | Short | Description |
+|------|-------|-------------|
+| `--help` | `-h` | Show full help text and exit |
+| `--version` | `-V` | Print the Clother version and exit |
+| `--verbose` | `-v` | Enable verbose output |
+| `--debug` | `-d` | Enable debug output (implies `--verbose`) |
+| `--quiet` | `-q` | Suppress non-essential output |
+| `--yes` | `-y` | Skip confirmation prompts |
+| `--no-input` | | Disable interactive prompts (non-interactive mode) |
+| `--no-banner` | | Suppress the provider banner when launching |
+| `--json` | | Output in JSON format (for `list`, `info`, `status`) |
+| `--plain` | | Output in plain text format (for `list`) |
+| `--bin-dir <path>` | | Override the bin directory for this invocation |
+
+---
+
 ## Management commands
 
 ### `clother`
@@ -70,8 +90,8 @@ clother list
 
 | Flag | Description |
 |---|---|
-| `--format json` | Output as JSON with `profiles` array containing `name`, `command`, and `configured` fields. |
-| `--format plain` | Output one profile name per line (useful for scripting). |
+| `--json` | Output as JSON with `profiles` array containing `name`, `command`, and `configured` fields. |
+| `--plain` | Output one profile name per line (useful for scripting). |
 
 **Examples**
 
@@ -80,10 +100,10 @@ clother list
 clother list
 
 # Machine-readable JSON
-clother list --format json
+clother list --json
 
 # Plain list of profile names
-clother list --format plain
+clother list --plain
 ```
 
 ---
@@ -108,7 +128,7 @@ clother info <provider>
 
 | Flag | Description |
 |---|---|
-| `--format json` | Output as JSON. |
+| `--json` | Output as JSON. |
 
 **Examples**
 
@@ -117,7 +137,7 @@ clother info <provider>
 clother info zai
 
 # Show in JSON
-clother info zai --format json
+clother info zai --json
 
 # Confirm which model is active for Alibaba
 clother info alibaba
@@ -152,7 +172,7 @@ clother test
 
 # Test a single provider
 clother test zai
-clother test openrouter
+clother test kimi
 ```
 
 ---
@@ -171,13 +191,13 @@ clother status
 
 | Flag | Description |
 |---|---|
-| `--format json` | Output as JSON with `version`, `config`, `data`, `bin`, and `profiles` fields. |
+| `--json` | Output as JSON with `version`, `config`, `data`, `bin`, and `profiles` fields. |
 
 **Examples**
 
 ```bash
 clother status
-clother status --format json
+clother status --json
 ```
 
 ---
@@ -308,6 +328,14 @@ clother-or-kimi-k25
 
 The following flags are accepted by all launcher commands (`clother-<provider>` and `clother-or-<alias>`) and by the `claude` shim installed by Clother.
 
+### `--no-banner`
+
+Suppresses the provider name banner that Clother prints at the start of a session. Useful for scripting or non-interactive use.
+
+```bash
+clother-zai --no-banner
+```
+
 ### `--model <model-id>`
 
 Overrides the default model for this invocation. The value is passed directly to the Claude CLI.
@@ -329,12 +357,14 @@ clother-kimi --yolo
 
 ### `--resume <session-id>`
 
-Resumes a previous Claude Code session. Clother prints a provider-aware resume command at the end of each session (e.g. `clother-kimi --resume <session-id>`), so you can resume exactly where you left off with the same provider.
+Passes a session ID through to the Claude CLI to resume a previous session. This is a Claude CLI flag that Clother forwards unchanged.
+
+Clother prints a provider-aware resume command at the end of each session (e.g. `clother-kimi --resume <session-id>`), so you can resume exactly where you left off with the same provider.
 
 ```bash
 clother-kimi --resume abc123
 ```
 
 <Note>
-When resuming a non-Claude session into `clother-native`, Clother temporarily sanitizes incompatible thinking blocks for that launch, then restores the original session file afterwards.
+When resuming a session that was started with a non-Claude provider into `clother-native`, Clother automatically sanitizes incompatible thinking blocks in the session file before launch, then restores the original session file afterwards.
 </Note>
