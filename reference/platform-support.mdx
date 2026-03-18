@@ -1,0 +1,70 @@
+---
+title: "Platform support"
+description: "Supported operating systems, shell environments, install paths, and runtime requirements for Clother."
+---
+
+## Supported platforms
+
+<CardGroup cols={3}>
+  <Card title="macOS" icon="apple">
+    zsh and bash
+  </Card>
+  <Card title="Linux" icon="linux">
+    zsh and bash
+  </Card>
+  <Card title="Windows WSL" icon="windows">
+    zsh and bash inside WSL
+  </Card>
+</CardGroup>
+
+Native Windows (outside WSL) is not supported, as Clother depends on the Claude Code CLI which itself requires a POSIX-compatible environment.
+
+## Default install paths
+
+The installer places `clother`, all `clother-*` launcher symlinks, and the `claude` shim in a platform-specific bin directory:
+
+| Platform | Default bin directory |
+|---|---|
+| macOS | `~/bin` |
+| Linux | `~/.local/bin` (XDG base directory standard) |
+
+Make sure this directory is on your `PATH`. If it is not, add it to your shell profile:
+
+```bash
+# Linux (~/.bashrc or ~/.zshrc)
+export PATH="$HOME/.local/bin:$PATH"
+
+# macOS (~/.zshrc)
+export PATH="$HOME/bin:$PATH"
+```
+
+## Overriding the install directory
+
+You can choose a different bin directory at install time using the `--bin-dir` flag or the `CLOTHER_BIN` environment variable.
+
+```bash
+# Using the --bin-dir flag
+curl -fsSL https://raw.githubusercontent.com/jolehuit/clother/main/scripts/install.sh | bash -s -- --bin-dir ~/.local/bin
+
+# Using the environment variable
+export CLOTHER_BIN="$HOME/.local/bin"
+curl -fsSL https://raw.githubusercontent.com/jolehuit/clother/main/scripts/install.sh | bash
+```
+
+After a custom install, run `clother status` to confirm the directory Clother is using.
+
+## Go runtime
+
+Clother is a single statically-linked Go binary. It has **no runtime dependencies** — no interpreter, no shared libraries, no virtual environment. The binary runs directly on the host OS.
+
+The installer downloads a pre-built release artifact for your platform and architecture. You do not need Go installed to use Clother.
+
+## Local release testing
+
+If you are building Clother from source and want to test the install script against a local release server, set `CLOTHER_RELEASE_BASE_URL` to point at your local HTTP server before running the installer:
+
+```bash
+CLOTHER_RELEASE_BASE_URL=http://127.0.0.1:8000 ./scripts/install.sh install
+```
+
+This is useful for verifying release artifacts before publishing them.

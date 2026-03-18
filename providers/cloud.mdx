@@ -1,0 +1,254 @@
+---
+title: Cloud providers
+description: International cloud providers with Anthropic-compatible APIs supported by Clother.
+---
+
+Clother ships built-in support for nine international cloud providers. Each one gets its own launcher command. Set the required API key once with `clother config <provider>` and switch between providers instantly.
+
+## Quick reference
+
+| Launcher | Provider | Default model | API key env var |
+|---|---|---|---|
+| `clother-native` | Anthropic | Your subscription | — |
+| `clother-zai` | Z.AI | `glm-5` | `ZAI_API_KEY` |
+| `clother-minimax` | MiniMax | `MiniMax-M2.5` | `MINIMAX_API_KEY` |
+| `clother-kimi` | Kimi K2 | `kimi-k2.5` | `KIMI_API_KEY` |
+| `clother-moonshot` | Moonshot AI | `kimi-k2.5` | `MOONSHOT_API_KEY` |
+| `clother-deepseek` | DeepSeek | `deepseek-chat` | `DEEPSEEK_API_KEY` |
+| `clother-mimo` | Xiaomi MiMo | `mimo-v2-flash` | `MIMO_API_KEY` |
+| `clother-alibaba` | Alibaba (Singapore) | `qwen3.5-plus` | `ALIBABA_API_KEY` |
+| `clother-alibaba-us` | Alibaba (US) | `qwen3.5-plus` | `ALIBABA_API_KEY` |
+
+---
+
+## Provider details
+
+### Anthropic (native)
+
+Uses your Claude Pro, Max, or Team subscription directly. No API key is required — Clother passes authentication through the Claude CLI's own login session.
+
+```bash
+clother-native
+```
+
+<Note>This is the only provider with `auth_mode: none`. It calls the Anthropic API at `https://api.anthropic.com` using the Claude CLI's built-in credentials.</Note>
+
+---
+
+### Z.AI
+
+<Card title="Z.AI" icon="key" href="https://z.ai">
+  Get your API key at z.ai
+</Card>
+
+| Field | Value |
+|---|---|
+| Launcher | `clother-zai` |
+| Default model | `glm-5` |
+| API key env var | `ZAI_API_KEY` |
+| Base URL | `https://api.z.ai/api/anthropic` |
+
+```bash
+clother config zai      # set ZAI_API_KEY
+clother-zai             # launch with default model (glm-5)
+clother-zai --model glm-4.7
+```
+
+**Available models**
+
+| Model ID | Description |
+|---|---|
+| `glm-5` | GLM-5 (default) |
+| `glm-4.7` | GLM-4.7 |
+
+---
+
+### MiniMax
+
+<Card title="MiniMax" icon="key" href="https://minimax.io">
+  Get your API key at minimax.io
+</Card>
+
+| Field | Value |
+|---|---|
+| Launcher | `clother-minimax` |
+| Default model | `MiniMax-M2.5` |
+| API key env var | `MINIMAX_API_KEY` |
+| Base URL | `https://api.minimax.io/anthropic` |
+
+```bash
+clother config minimax
+clother-minimax
+clother-minimax --model MiniMax-M2.5-highspeed
+```
+
+**Available models**
+
+| Model ID | Description |
+|---|---|
+| `MiniMax-M2.5` | MiniMax M2.5 (default) |
+| `MiniMax-M2.5-highspeed` | MiniMax M2.5 Highspeed |
+| `MiniMax-M2.1` | MiniMax M2.1 |
+| `MiniMax-M2.1-highspeed` | MiniMax M2.1 Highspeed |
+| `MiniMax-M2` | MiniMax M2 |
+
+---
+
+### Kimi K2
+
+<Card title="Kimi" icon="key" href="https://kimi.com">
+  Get your API key at kimi.com
+</Card>
+
+| Field | Value |
+|---|---|
+| Launcher | `clother-kimi` |
+| Default model | `kimi-k2.5` |
+| API key env var | `KIMI_API_KEY` |
+| Base URL | `https://api.kimi.com/coding/` |
+
+```bash
+clother config kimi
+clother-kimi
+```
+
+---
+
+### Moonshot AI
+
+<Card title="Moonshot AI" icon="key" href="https://moonshot.ai">
+  Get your API key at moonshot.ai
+</Card>
+
+| Field | Value |
+|---|---|
+| Launcher | `clother-moonshot` |
+| Default model | `kimi-k2.5` |
+| API key env var | `MOONSHOT_API_KEY` |
+| Base URL | `https://api.moonshot.ai/anthropic` |
+
+```bash
+clother config moonshot
+clother-moonshot
+```
+
+<Note>Moonshot AI and Kimi both serve `kimi-k2.5` but use different API keys and base URLs.</Note>
+
+---
+
+### DeepSeek
+
+<Card title="DeepSeek" icon="key" href="https://platform.deepseek.com">
+  Get your API key at platform.deepseek.com
+</Card>
+
+| Field | Value |
+|---|---|
+| Launcher | `clother-deepseek` |
+| Default model | `deepseek-chat` |
+| API key env var | `DEEPSEEK_API_KEY` |
+| Base URL | `https://api.deepseek.com/anthropic` |
+
+```bash
+clother config deepseek
+clother-deepseek
+```
+
+---
+
+### Xiaomi MiMo
+
+<Card title="Xiaomi MiMo" icon="key" href="https://platform.xiaomimimo.com">
+  Get your API key at platform.xiaomimimo.com
+</Card>
+
+| Field | Value |
+|---|---|
+| Launcher | `clother-mimo` |
+| Default model | `mimo-v2-flash` |
+| API key env var | `MIMO_API_KEY` |
+| Base URL | `https://api.xiaomimimo.com/anthropic` |
+
+```bash
+clother config mimo
+clother-mimo
+```
+
+---
+
+### Alibaba Coding Plan
+
+Alibaba offers two international regions with the same API key and the same set of available models.
+
+<Card title="Alibaba Model Studio" icon="key" href="https://modelstudio.console.alibabacloud.com">
+  Get your API key at modelstudio.console.alibabacloud.com
+</Card>
+
+<Tabs>
+  <Tab title="Singapore">
+
+| Field | Value |
+|---|---|
+| Launcher | `clother-alibaba` |
+| Default model | `qwen3.5-plus` |
+| API key env var | `ALIBABA_API_KEY` |
+| Base URL | `https://coding-intl.dashscope.aliyuncs.com/apps/anthropic` |
+
+```bash
+clother config alibaba
+clother-alibaba
+```
+
+  </Tab>
+  <Tab title="US">
+
+| Field | Value |
+|---|---|
+| Launcher | `clother-alibaba-us` |
+| Default model | `qwen3.5-plus` |
+| API key env var | `ALIBABA_API_KEY` |
+| Base URL | `https://coding-us.dashscope.aliyuncs.com/apps/anthropic` |
+
+```bash
+clother config alibaba-us
+clother-alibaba-us
+```
+
+  </Tab>
+</Tabs>
+
+**Available models** (shared across all Alibaba variants)
+
+| Model ID | Description |
+|---|---|
+| `qwen3.5-plus` | Qwen 3.5 Plus (default) |
+| `kimi-k2.5` | Kimi K2.5 |
+| `glm-5` | GLM-5 |
+| `MiniMax-M2.5` | MiniMax M2.5 |
+| `qwen3-coder-next` | Qwen3 Coder Next |
+| `qwen3-coder-plus` | Qwen3 Coder Plus |
+| `qwen3-max-2026-01-23` | Qwen3 Max |
+| `glm-4.7` | GLM-4.7 |
+
+```bash
+# Switch models at runtime
+clother-alibaba --model kimi-k2.5
+clother-alibaba-us --model glm-5
+```
+
+---
+
+## Changing the default model
+
+Pass `--model` for a one-time override, or run `clother config <provider>` to change the permanent default:
+
+```bash
+# One-time override
+clother-zai --model glm-4.7
+
+# Permanent change
+clother config zai
+
+# Inspect the resolved model
+clother info zai
+```

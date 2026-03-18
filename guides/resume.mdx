@@ -1,0 +1,42 @@
+---
+title: "Resuming sessions"
+description: "How Clother preserves session resume across providers, including cross-provider resume into native Claude."
+---
+
+Clother preserves full compatibility with `claude --resume <session-id>`. Whether a session was started with a provider launcher or with the `claude` shim, you can resume it the same way.
+
+## Provider-aware resume commands
+
+After a session ends, Clother prints a provider-aware resume command alongside the standard Claude resume hint. For example, after a Kimi session you will see:
+
+```bash
+clother-kimi --resume <session-id>
+```
+
+Using the provider-specific launcher to resume ensures the same provider and model are used for the continued session.
+
+## Cross-provider resume into native Claude
+
+When you resume a session that was started with a non-Claude provider into native Claude (for example, by running `claude --resume <session-id>` after a Kimi session), Clother detects that the session file contains incompatible thinking blocks produced by the non-Claude model.
+
+It handles this automatically:
+
+1. Before launch, Clother temporarily sanitizes the session file, removing incompatible `thinking` and `reasoning` blocks from non-Claude assistant messages.
+2. The native Claude session runs against the sanitized file.
+3. After the session ends, Clother restores the original session file, merging in any new messages written during the resumed session.
+
+The original session data is never permanently discarded.
+
+## The `claude` shim
+
+During install, Clother creates a `claude` shim symlink in your bin directory. This shim intercepts `claude --resume ...` calls so that Clother's resume handling (including cross-provider sanitization) applies even when you use the plain `claude` command.
+
+## Troubleshooting
+
+If `claude --resume ...` does not behave like Clother (for example, the shim is bypassed or sanitization does not run), restart your shell and then run:
+
+```bash
+clother install
+```
+
+This refreshes the `claude` shim and all launcher symlinks.

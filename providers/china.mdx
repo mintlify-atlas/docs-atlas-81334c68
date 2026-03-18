@@ -1,0 +1,120 @@
+---
+title: China endpoints
+description: Provider endpoints hosted inside mainland China for lower latency access.
+---
+
+Clother includes four providers that route to API endpoints hosted inside mainland China. These are useful when international endpoints are slow or unreliable from your network.
+
+<Note>China endpoints are maintained by community contributors. See the [contributors list](https://github.com/jolehuit/clother#contributors) for details.</Note>
+
+## Quick reference
+
+| Launcher | Provider | Endpoint | API key env var |
+|---|---|---|---|
+| `clother-zai-cn` | Z.AI China | `open.bigmodel.cn` | `ZAI_CN_API_KEY` |
+| `clother-minimax-cn` | MiniMax China | `api.minimaxi.com` | `MINIMAX_CN_API_KEY` |
+| `clother-ve` | VolcEngine | `ark.cn-beijing.volces.com` | `ARK_API_KEY` |
+| `clother-alibaba-cn` | Alibaba China | `coding.dashscope.aliyuncs.com` | `ALIBABA_API_KEY` |
+
+---
+
+## Provider details
+
+### Z.AI China
+
+| Field | Value |
+|---|---|
+| Launcher | `clother-zai-cn` |
+| Default model | `glm-5` |
+| API key env var | `ZAI_CN_API_KEY` |
+| Base URL | `https://open.bigmodel.cn/api/anthropic` |
+
+```bash
+clother config zai-cn
+clother-zai-cn
+```
+
+**Available models**
+
+| Model ID | Description |
+|---|---|
+| `glm-5` | GLM-5 (default) |
+| `glm-4.7` | GLM-4.7 |
+
+<Note>`ZAI_CN_API_KEY` is separate from `ZAI_API_KEY` used by the international endpoint. Configure them independently with `clother config zai-cn` and `clother config zai`.</Note>
+
+---
+
+### MiniMax China
+
+| Field | Value |
+|---|---|
+| Launcher | `clother-minimax-cn` |
+| Default model | `MiniMax-M2.5` |
+| API key env var | `MINIMAX_CN_API_KEY` |
+| Base URL | `https://api.minimaxi.com/anthropic` |
+
+```bash
+clother config minimax-cn
+clother-minimax-cn
+```
+
+**Available models**
+
+| Model ID | Description |
+|---|---|
+| `MiniMax-M2.5` | MiniMax M2.5 (default) |
+| `MiniMax-M2.5-highspeed` | MiniMax M2.5 Highspeed |
+| `MiniMax-M2.1` | MiniMax M2.1 |
+| `MiniMax-M2.1-highspeed` | MiniMax M2.1 Highspeed |
+| `MiniMax-M2` | MiniMax M2 |
+
+<Note>`MINIMAX_CN_API_KEY` is separate from `MINIMAX_API_KEY` used by the international endpoint.</Note>
+
+---
+
+### VolcEngine
+
+| Field | Value |
+|---|---|
+| Launcher | `clother-ve` |
+| Default model | `doubao-seed-code-preview-latest` |
+| API key env var | `ARK_API_KEY` |
+| Base URL | `https://ark.cn-beijing.volces.com/api/coding` |
+
+```bash
+clother config ve
+clother-ve
+```
+
+---
+
+### Alibaba China
+
+| Field | Value |
+|---|---|
+| Launcher | `clother-alibaba-cn` |
+| Default model | `qwen3.5-plus` |
+| API key env var | `ALIBABA_API_KEY` |
+| Base URL | `https://coding.dashscope.aliyuncs.com/apps/anthropic` |
+
+```bash
+clother config alibaba-cn
+clother-alibaba-cn
+clother-alibaba-cn --model qwen3-coder-next
+```
+
+Alibaba China shares the same `ALIBABA_API_KEY` as the Singapore and US regions. If you have already configured an international Alibaba provider, the key is already set.
+
+**Available models** (same as all Alibaba variants)
+
+| Model ID | Description |
+|---|---|
+| `qwen3.5-plus` | Qwen 3.5 Plus (default) |
+| `kimi-k2.5` | Kimi K2.5 |
+| `glm-5` | GLM-5 |
+| `MiniMax-M2.5` | MiniMax M2.5 |
+| `qwen3-coder-next` | Qwen3 Coder Next |
+| `qwen3-coder-plus` | Qwen3 Coder Plus |
+| `qwen3-max-2026-01-23` | Qwen3 Max |
+| `glm-4.7` | GLM-4.7 |

@@ -1,0 +1,162 @@
+---
+title: "Troubleshooting"
+description: "Solutions for common Clother installation and runtime issues."
+---
+
+<AccordionGroup>
+
+  <Accordion title="claude: command not found">
+    Clother requires the Claude Code CLI to be installed before it can launch any provider. If `claude` is missing, install it first:
+
+    ```bash
+    curl -fsSL https://claude.ai/install.sh | bash
+    ```
+
+    After installation, restart your shell and verify with:
+
+    ```bash
+    claude --version
+    ```
+
+    Then run `clother install` to let Clother locate the binary.
+  </Accordion>
+
+  <Accordion title="clother: command not found">
+    The directory where Clother was installed is not on your `PATH`.
+
+    Check which directory Clother uses:
+
+    ```bash
+    clother status
+    ```
+
+    Then add that directory to your shell's `PATH`. For example, if Clother is installed to `~/.local/bin`:
+
+    ```bash
+    # Add to ~/.bashrc or ~/.zshrc
+    export PATH="$HOME/.local/bin:$PATH"
+    ```
+
+    Reload your shell:
+
+    ```bash
+    source ~/.bashrc   # or ~/.zshrc
+    ```
+
+    Alternatively, override the install directory at install time using `--bin-dir` or `CLOTHER_BIN`. See the [platform support](/reference/platform-support) page for default paths.
+  </Accordion>
+
+  <Accordion title="claude --resume ... does not behave like Clother">
+    The `claude` shim installed by Clother is not being picked up — your shell may be resolving the original `claude` binary instead.
+
+    1. Restart your shell to clear any cached binary paths.
+    2. Re-run the install to make sure the shim is in place:
+
+    ```bash
+    clother install
+    ```
+
+    3. Verify the shim is resolved first:
+
+    ```bash
+    which claude
+    ```
+
+    The path shown should be inside the Clother bin directory (e.g. `~/.local/bin/claude`), not the original Claude install location.
+  </Accordion>
+
+  <Accordion title="--yolo is not recognized">
+    The `--yolo` flag is handled by the Clother `claude` shim. If the flag is not recognized, the shim is not being used.
+
+    1. Restart your shell.
+    2. Run `clother install` to ensure the shim is installed and up to date.
+    3. Confirm `which claude` points to the Clother bin directory.
+  </Accordion>
+
+  <Accordion title="API key not set">
+    A launcher exited with an error like `API key not set` because the required secret has not been configured yet.
+
+    Run the interactive config for the affected provider:
+
+    ```bash
+    clother config <provider>
+    # For example:
+    clother config zai
+    clother config kimi
+    ```
+
+    You can also run `clother config` without arguments to pick from a menu.
+
+    API keys are stored in `~/.local/share/clother/secrets.env` (permissions `600`).
+  </Accordion>
+
+  <Accordion title="Testing whether a provider endpoint is reachable">
+    Use `clother test` to check HTTP connectivity to provider endpoints without starting a full Claude session:
+
+    ```bash
+    # Test all providers
+    clother test
+
+    # Test a specific provider
+    clother test zai
+    clother test kimi
+    ```
+
+    Each result shows whether the endpoint is reachable and the HTTP status code returned. A result of `unreachable` indicates a network or firewall issue, not necessarily a credentials problem.
+  </Accordion>
+
+  <Accordion title="Checking what Clother has installed">
+    Run `clother status` to see the current version, all relevant directories, and the number of active profiles:
+
+    ```bash
+    clother status
+    ```
+
+    For scripting or CI, use JSON output:
+
+    ```bash
+    clother status --format json
+    ```
+
+    This is also useful when configuring VS Code integration — the `Bin` path shown is where your launcher binaries live, and you can pass the full path of any launcher to the `claudeProcessWrapper` setting.
+  </Accordion>
+
+  <Accordion title="Where are API keys stored?">
+    Clother stores all API keys in:
+
+    ```
+    ~/.local/share/clother/secrets.env
+    ```
+
+    The file is created with `chmod 600` (readable only by your user). You can view or edit it directly if needed, but the recommended way to update keys is via:
+
+    ```bash
+    clother config <provider>
+    ```
+  </Accordion>
+
+  <Accordion title="Finding the launcher path for VS Code integration">
+    The Claude Code VS Code extension (`claudeProcessWrapper` setting) requires the **full absolute path** to a launcher binary.
+
+    Run `clother status` to find your bin directory, then append the launcher name:
+
+    ```bash
+    clother status
+    # Example output:
+    # Bin: /home/yourname/.local/bin
+    ```
+
+    Set `claudeProcessWrapper` to the full path, for example:
+
+    ```
+    /home/yourname/.local/bin/clother-zai
+    ```
+
+    On macOS the bin directory is typically `~/bin`:
+
+    ```
+    /Users/yourname/bin/clother-zai
+    ```
+  </Accordion>
+
+</AccordionGroup>

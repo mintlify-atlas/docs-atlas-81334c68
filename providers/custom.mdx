@@ -1,0 +1,57 @@
+---
+title: Custom providers
+description: Configure any Anthropic-compatible API endpoint as a named Clother provider.
+---
+
+If the provider you want to use is not in the built-in catalog, you can configure it as a custom provider. Clother installs a `clother-<name>` launcher for it like any other provider.
+
+## Configuration
+
+Run the interactive configuration command:
+
+```bash
+clother config custom
+```
+
+Clother will prompt you for:
+
+| Field | Description |
+|---|---|
+| Name | A short identifier for the provider (used in the launcher name) |
+| Base URL | The Anthropic-compatible API base URL |
+| API key | Your API key for the provider |
+| Default model | The model ID to use by default |
+
+After saving, the launcher is immediately available:
+
+```bash
+clother-<name>
+```
+
+## Example workflow
+
+```bash
+# Configure a custom provider named "myprovider"
+clother config custom
+# ... follow the prompts ...
+
+# Use the resulting launcher
+clother-myprovider
+
+# Override the model at runtime
+clother-myprovider --model some-model-id
+
+# Inspect the resolved configuration
+clother info myprovider
+```
+
+## Requirements
+
+The endpoint you configure must be compatible with the Anthropic Messages API. Clother sets:
+
+- `ANTHROPIC_BASE_URL` to your configured base URL
+- `ANTHROPIC_AUTH_TOKEN` to your configured API key
+
+and then launches the Claude CLI, which sends requests to that endpoint.
+
+<Tip>Use `clother test` after configuring a custom provider to verify that the endpoint is reachable.</Tip>

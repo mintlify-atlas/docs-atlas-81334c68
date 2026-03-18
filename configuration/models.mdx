@@ -1,0 +1,88 @@
+---
+title: 'Changing models'
+description: 'Override the default model for a provider on a single run or permanently through configuration.'
+---
+
+Every built-in provider ships with a default model. You can change it in two ways.
+
+## One-time override
+
+Pass `--model` directly when launching. The flag is forwarded to Claude CLI.
+
+```bash
+clother-zai --model glm-4.7
+clother-alibaba --model kimi-k2.5
+clother-ollama --model qwen3-coder
+```
+
+The override applies only to that single session. The configured default is unchanged.
+
+## Permanent override
+
+Run `clother config <provider>` and choose a different default model. Clother writes the override to `config.json` and uses it for all future launches of that provider.
+
+```bash
+clother config zai
+# Choose model:
+#   1. glm-5     GLM-5
+#   2. glm-4.7   GLM-4.7
+# Model [glm-5]: 2
+```
+
+To see what model is currently in effect for a provider:
+
+```bash
+clother info zai
+```
+
+## Provider default models
+
+| Provider | Launcher | Default model | Other available models |
+|----------|----------|---------------|------------------------|
+| Anthropic (native) | `clother-native` | _(Claude default)_ | — |
+| Z.AI | `clother-zai` | `glm-5` | `glm-4.7` |
+| Z.AI China | `clother-zai-cn` | `glm-5` | `glm-4.7` |
+| MiniMax | `clother-minimax` | `MiniMax-M2.5` | `MiniMax-M2.5-highspeed`, `MiniMax-M2.1`, `MiniMax-M2.1-highspeed`, `MiniMax-M2` |
+| MiniMax China | `clother-minimax-cn` | `MiniMax-M2.5` | `MiniMax-M2.5-highspeed`, `MiniMax-M2.1`, `MiniMax-M2.1-highspeed`, `MiniMax-M2` |
+| Kimi | `clother-kimi` | `kimi-k2.5` | — |
+| Moonshot AI | `clother-moonshot` | `kimi-k2.5` | — |
+| DeepSeek | `clother-deepseek` | `deepseek-chat` | — |
+| Xiaomi MiMo | `clother-mimo` | `mimo-v2-flash` | — |
+| Alibaba (Singapore) | `clother-alibaba` | `qwen3.5-plus` | `kimi-k2.5`, `glm-5`, `MiniMax-M2.5`, `qwen3-coder-next`, `qwen3-coder-plus`, `qwen3-max-2026-01-23`, `glm-4.7` |
+| Alibaba (US) | `clother-alibaba-us` | `qwen3.5-plus` | `kimi-k2.5`, `glm-5`, `MiniMax-M2.5`, `qwen3-coder-next`, `qwen3-coder-plus`, `qwen3-max-2026-01-23`, `glm-4.7` |
+| Alibaba China | `clother-alibaba-cn` | `qwen3.5-plus` | `kimi-k2.5`, `glm-5`, `MiniMax-M2.5`, `qwen3-coder-next`, `qwen3-coder-plus`, `qwen3-max-2026-01-23`, `glm-4.7` |
+| VolcEngine | `clother-ve` | `doubao-seed-code-preview-latest` | — |
+| Ollama | `clother-ollama` | _(specify via `--model`)_ | any model pulled locally |
+| LM Studio | `clother-lmstudio` | _(specify via `--model`)_ | any model loaded in LM Studio |
+| llama.cpp | `clother-llamacpp` | _(specify via `--model`)_ | any model served by llama-server |
+
+## OpenRouter
+
+OpenRouter launchers follow the `clother-or-<alias>` naming pattern. The model is bound to the alias at configuration time, not at launch time.
+
+<Steps>
+  <Step title="Run the OpenRouter configurator">
+    ```bash
+    clother config openrouter
+    ```
+  </Step>
+  <Step title="Enter a model ID and alias">
+    ```
+    Model ID (empty to stop): moonshotai/kimi-k2.5
+    Alias [kimi-k2-5]: kimi-k25
+    ```
+
+    Find model IDs at [openrouter.ai/models](https://openrouter.ai/models).
+  </Step>
+  <Step title="Use the launcher">
+    ```bash
+    clother-or-kimi-k25
+    ```
+  </Step>
+</Steps>
+
+To use a different model through the same alias, re-run `clother config openrouter` and provide a new model ID for the same alias name.
+
+<Tip>
+  If a model doesn't behave as expected with tool calls, try the `:exacto` variant — for example `moonshotai/kimi-k2-0905:exacto`.
+</Tip>

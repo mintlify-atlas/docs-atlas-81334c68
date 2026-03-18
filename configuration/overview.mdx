@@ -1,0 +1,91 @@
+---
+title: 'Configuration overview'
+description: 'Configure providers and API keys so Clother can launch Claude Code against any backend.'
+---
+
+Clother needs two things configured for each cloud provider:
+
+1. **Provider settings** — which endpoint and model to use (stored in `config.json`)
+2. **Secrets** — the API key for that provider (stored in `secrets.env`, chmod 600)
+
+Local providers (Ollama, LM Studio, llama.cpp) and the native Anthropic provider require neither.
+
+## Interactive configuration
+
+Run `clother config` at any time to configure providers interactively.
+
+```bash
+# Configure all providers — presents a numbered menu
+clother config
+
+# Configure a specific provider directly
+clother config zai
+clother config minimax
+clother config openrouter
+clother config custom
+```
+
+When you run `clother config [provider]`, Clother will:
+
+<Steps>
+  <Step title="Prompt for an API key">
+    If the provider requires a secret, you are prompted for the API key. Press Enter to keep the existing value.
+  </Step>
+  <Step title="Prompt for a model">
+    If the provider has model choices, you are shown a numbered list and can type a number or a model ID. Press Enter to accept the default.
+  </Step>
+  <Step title="Save and sync">
+    Clother writes `config.json` and `secrets.env`, then re-synchronizes the installed launcher symlinks.
+  </Step>
+</Steps>
+
+## Listing configured profiles
+
+```bash
+clother list
+```
+
+Prints every provider profile Clother knows about, including any OpenRouter aliases and custom providers you have added.
+
+## Inspecting a provider
+
+```bash
+clother info <provider>
+```
+
+Shows the resolved configuration for a provider — the base URL, the active model (after any override), and whether an API key is set.
+
+```bash
+clother info zai
+clother info ollama
+clother info openrouter
+```
+
+## Configuration file locations
+
+Clother follows XDG base directory conventions on Linux and the equivalent on macOS.
+
+| File | Default path | Override |
+|------|-------------|----------|
+| Provider config | `~/.config/clother/config.json` | `CLOTHER_CONFIG_DIR` |
+| API keys | `~/.local/share/clother/secrets.env` | `CLOTHER_DATA_DIR` |
+| Launcher manifest | `~/.local/share/clother/launchers.json` | `CLOTHER_DATA_DIR` |
+| Update cache | `~/.cache/clother/update.json` | `CLOTHER_CACHE_DIR` |
+
+You can override any directory with the corresponding environment variable or with `XDG_CONFIG_HOME`, `XDG_DATA_HOME`, or `XDG_CACHE_HOME`.
+
+## How Clother passes credentials to Claude
+
+At runtime, Clother resolves the selected provider profile and sets two environment variables before launching the real Claude binary:
+
+```bash
+export ANTHROPIC_BASE_URL="https://api.z.ai/api/anthropic"
+export ANTHROPIC_AUTH_TOKEN="$ZAI_API_KEY"
+exec /path/to/claude "$@"
+```
+
+`ANTHROPIC_BASE_URL` points Claude at the provider's API endpoint. `ANTHROPIC_AUTH_TOKEN` carries the API key. These variables are set in the subprocess environment only — they are not written to your shell profile.
+
+<Note>
+  For the native Anthropic provider (`clother-native`), neither variable is set. Claude uses your existing subscription credentials directly.
+</Note>

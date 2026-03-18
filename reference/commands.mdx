@@ -1,0 +1,340 @@
+---
+title: "Command reference"
+description: "Complete reference for all Clother CLI commands, launchers, and flags."
+---
+
+## Management commands
+
+### `clother`
+
+With no arguments, shows brief help output.
+
+```bash
+clother
+```
+
+---
+
+### `clother config [provider]`
+
+Configures a provider interactively. Prompts for an API key and, where applicable, lets you choose a default model. When finished, saves configuration and regenerates all launcher symlinks.
+
+If `provider` is omitted, Clother presents a numbered menu of all available providers to choose from.
+
+**Usage**
+
+```bash
+clother config
+clother config <provider>
+```
+
+**Arguments**
+
+| Argument | Description |
+|---|---|
+| `provider` | Provider ID to configure (e.g. `zai`, `kimi`, `openrouter`, `custom`). Optional — if omitted, an interactive menu is shown. |
+
+**Examples**
+
+```bash
+# Interactive provider picker
+clother config
+
+# Configure Z.AI directly
+clother config zai
+
+# Configure OpenRouter (sets API key and adds model aliases)
+clother config openrouter
+
+# Configure a custom Anthropic-compatible endpoint
+clother config custom
+```
+
+<Note>
+After saving, `clother config` automatically re-syncs all launcher symlinks so your changes take effect immediately.
+</Note>
+
+---
+
+### `clother list`
+
+Lists all available profiles and whether each one is configured (i.e. has an API key set).
+
+**Usage**
+
+```bash
+clother list
+```
+
+**Flags**
+
+| Flag | Description |
+|---|---|
+| `--format json` | Output as JSON with `profiles` array containing `name`, `command`, and `configured` fields. |
+| `--format plain` | Output one profile name per line (useful for scripting). |
+
+**Examples**
+
+```bash
+# Human-readable table
+clother list
+
+# Machine-readable JSON
+clother list --format json
+
+# Plain list of profile names
+clother list --format plain
+```
+
+---
+
+### `clother info <provider>`
+
+Shows the resolved configuration for a specific provider: profile name, display name, model family, base URL, active model, and credential status.
+
+**Usage**
+
+```bash
+clother info <provider>
+```
+
+**Arguments**
+
+| Argument | Description |
+|---|---|
+| `provider` | Provider ID (e.g. `zai`, `kimi`, `ollama`). Required. |
+
+**Flags**
+
+| Flag | Description |
+|---|---|
+| `--format json` | Output as JSON. |
+
+**Examples**
+
+```bash
+# Show resolved config for Z.AI
+clother info zai
+
+# Show in JSON
+clother info zai --format json
+
+# Confirm which model is active for Alibaba
+clother info alibaba
+```
+
+---
+
+### `clother test [provider]`
+
+Tests HTTP connectivity to provider endpoints. With no argument, tests all configured providers (skipping `native`). With a provider argument, tests only that provider.
+
+Prints whether each endpoint is reachable and the HTTP status code returned.
+
+**Usage**
+
+```bash
+clother test
+clother test <provider>
+```
+
+**Arguments**
+
+| Argument | Description |
+|---|---|
+| `provider` | Provider ID to test. Optional — if omitted, all providers are tested. |
+
+**Examples**
+
+```bash
+# Test all providers
+clother test
+
+# Test a single provider
+clother test zai
+clother test openrouter
+```
+
+---
+
+### `clother status`
+
+Shows the current Clother installation status: version, config directory, data directory, bin directory, and the number of active profiles.
+
+**Usage**
+
+```bash
+clother status
+```
+
+**Flags**
+
+| Flag | Description |
+|---|---|
+| `--format json` | Output as JSON with `version`, `config`, `data`, `bin`, and `profiles` fields. |
+
+**Examples**
+
+```bash
+clother status
+clother status --format json
+```
+
+---
+
+### `clother install`
+
+Installs or updates Clother in place. Locates the real `claude` binary, preserves it, writes config and secrets files, and re-syncs all launcher symlinks. Use this after updating the `clother` binary or to repair a broken install.
+
+**Usage**
+
+```bash
+clother install
+```
+
+**Examples**
+
+```bash
+# Install or repair
+clother install
+
+# Update Clother (re-run after downloading a new binary)
+clother install
+```
+
+<Note>
+Requires Claude Code CLI to already be installed. If `claude` is not found, `clother install` will exit with an error.
+</Note>
+
+---
+
+### `clother uninstall`
+
+Removes Clother and all launchers. Deletes all `clother-*` symlinks, the `claude` shim, the `clother` binary, and all config, data, and cache directories.
+
+Prompts for confirmation before proceeding unless `--yes` is passed.
+
+**Usage**
+
+```bash
+clother uninstall
+```
+
+**Flags**
+
+| Flag | Description |
+|---|---|
+| `--yes` | Skip the confirmation prompt. |
+
+**Examples**
+
+```bash
+# Interactive (asks for confirmation)
+clother uninstall
+
+# Non-interactive
+clother uninstall --yes
+```
+
+<Warning>
+This permanently removes all Clother files including saved API keys. Your original Claude CLI installation is not affected.
+</Warning>
+
+---
+
+### `clother help`
+
+Prints the full help text, including all available providers from the catalog.
+
+```bash
+clother help
+```
+
+---
+
+## Launcher commands
+
+For every configured provider, Clother installs a `clother-<provider>` symlink in your bin directory. Invoking a launcher sets the appropriate `ANTHROPIC_BASE_URL` and `ANTHROPIC_AUTH_TOKEN` environment variables and then executes the real `claude` binary, passing all arguments through.
+
+### `clother-<provider>`
+
+Launches Claude Code using the specified provider.
+
+```bash
+clother-<provider> [flags] [claude-args...]
+```
+
+**Built-in provider launchers**
+
+| Command | Provider | Default model |
+|---|---|---|
+| `clother-native` | Anthropic (subscription) | — |
+| `clother-zai` | Z.AI International | `glm-5` |
+| `clother-zai-cn` | Z.AI China | `glm-5` |
+| `clother-minimax` | MiniMax International | `MiniMax-M2.5` |
+| `clother-minimax-cn` | MiniMax China | `MiniMax-M2.5` |
+| `clother-kimi` | Kimi K2 | `kimi-k2.5` |
+| `clother-moonshot` | Moonshot AI | `kimi-k2.5` |
+| `clother-deepseek` | DeepSeek | `deepseek-chat` |
+| `clother-mimo` | Xiaomi MiMo | `mimo-v2-flash` |
+| `clother-alibaba` | Alibaba Coding Plan (Singapore) | `qwen3.5-plus` |
+| `clother-alibaba-us` | Alibaba Coding Plan (US) | `qwen3.5-plus` |
+| `clother-alibaba-cn` | Alibaba Coding Plan (China) | `qwen3.5-plus` |
+| `clother-ve` | VolcEngine | `doubao-seed-code-preview-latest` |
+| `clother-ollama` | Ollama (local) | *(specify with `--model`)* |
+| `clother-lmstudio` | LM Studio (local) | *(specify with `--model`)* |
+| `clother-llamacpp` | llama.cpp (local) | *(specify with `--model`)* |
+
+---
+
+### `clother-or-<alias>`
+
+Launches Claude Code through OpenRouter using a model alias you defined with `clother config openrouter`.
+
+```bash
+clother-or-<alias> [flags] [claude-args...]
+```
+
+**Example**
+
+```bash
+# After aliasing moonshotai/kimi-k2.5 as "kimi-k25"
+clother-or-kimi-k25
+```
+
+---
+
+## Launcher flags
+
+The following flags are accepted by all launcher commands (`clother-<provider>` and `clother-or-<alias>`) and by the `claude` shim installed by Clother.
+
+### `--model <model-id>`
+
+Overrides the default model for this invocation. The value is passed directly to the Claude CLI.
+
+```bash
+clother-zai --model glm-4.7
+clother-ollama --model qwen3-coder
+clother-alibaba --model kimi-k2.5
+```
+
+### `--yolo`
+
+Shorthand for `--dangerously-skip-permissions`. Skips all permission prompts for the current session. Accepted by all launchers and by the Clother `claude` shim.
+
+```bash
+clother-zai --yolo
+clother-kimi --yolo
+```
+
+### `--resume <session-id>`
+
+Resumes a previous Claude Code session. Clother prints a provider-aware resume command at the end of each session (e.g. `clother-kimi --resume <session-id>`), so you can resume exactly where you left off with the same provider.
+
+```bash
+clother-kimi --resume abc123
+```
+
+<Note>
+When resuming a non-Claude session into `clother-native`, Clother temporarily sanitizes incompatible thinking blocks for that launch, then restores the original session file afterwards.
+</Note>

@@ -1,0 +1,53 @@
+---
+title: "VS Code integration"
+description: "Use Clother with the official Claude Code extension to switch providers inside VS Code."
+---
+
+Clother works with the official **Claude Code** extension for VS Code. Once configured, any provider launcher you choose will be used automatically whenever the extension starts a Claude session.
+
+## Requirements
+
+- Claude Code extension **v2.6+**
+- Clother **v2.6+** — required for correct non-interactive shell output
+
+## Setup
+
+<Steps>
+  <Step title="Open VS Code Settings">
+    Press `Cmd+,` on macOS or `Ctrl+,` on Linux/Windows.
+  </Step>
+
+  <Step title="Search for the process wrapper setting">
+    In the search bar, type **Claude Process Wrapper** or the setting ID `claudeProcessWrapper`.
+  </Step>
+
+  <Step title="Set the full path to your chosen launcher">
+    Enter the absolute path to the Clother launcher you want to use.
+
+    ```text macOS
+    /Users/yourname/bin/clother-zai
+    ```
+
+    ```text Linux
+    /home/yourname/.local/bin/clother-zai
+    ```
+
+    Replace `clother-zai` with any other launcher (for example `clother-kimi`, `clother-native`, or `clother-ollama`).
+
+    <Note>
+      The full path is required. Using just the command name (e.g. `clother-zai`) will not work because VS Code does not load your shell's PATH when invoking the wrapper.
+    </Note>
+  </Step>
+
+  <Step title="Reload VS Code">
+    Open the command palette (`Cmd+Shift+P` / `Ctrl+Shift+P`) and run **Developer: Reload Window**, or restart VS Code entirely.
+  </Step>
+</Steps>
+
+## Switching providers
+
+To use a different provider, update the `claudeProcessWrapper` setting to the full path of another launcher and reload VS Code. No other changes are needed.
+
+<Tip>
+  Run `clother status` in your terminal to see the bin directory where Clother installed its launchers. Use the path it prints to build the full path for the VS Code setting.
+</Tip>

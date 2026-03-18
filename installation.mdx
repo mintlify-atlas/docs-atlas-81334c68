@@ -1,0 +1,108 @@
+---
+title: 'Installation'
+description: 'Install Clother on macOS, Linux, or Windows WSL with a single curl command.'
+---
+
+## Platform support
+
+Clother runs on **macOS** (zsh/bash), **Linux** (zsh/bash), and **Windows WSL**.
+
+## Install
+
+<Steps>
+  <Step title="Install Claude Code CLI">
+    Clother wraps the Claude Code CLI, so you need it installed first.
+
+    ```bash
+    curl -fsSL https://claude.ai/install.sh | bash
+    ```
+  </Step>
+
+  <Step title="Install Clother">
+    Run the one-liner installer. It downloads the release binary for your OS and architecture, verifies its checksum, and runs the install command.
+
+    ```bash
+    curl -fsSL https://raw.githubusercontent.com/jolehuit/clother/main/scripts/install.sh | bash
+    ```
+
+    The installer places everything in your bin directory and exits.
+  </Step>
+
+  <Step title="Verify the installation">
+    Check that Clother is available and the launchers are in place.
+
+    ```bash
+    clother status
+    ```
+  </Step>
+</Steps>
+
+## What gets installed
+
+The installer places the following into your bin directory:
+
+| File | Purpose |
+|------|---------|
+| `clother` | The main binary. Handles `config`, `list`, `info`, `status`, and other management commands. |
+| `clother-*` | One symlink per provider (e.g. `clother-zai`, `clother-kimi`, `clother-ollama`). |
+| `claude` shim | A symlink that keeps `claude --resume ...` working with Clother features. |
+
+API keys are stored separately in `~/.local/share/clother/secrets.env` (permissions `600`).
+
+## Default install paths
+
+| Platform | Default bin directory |
+|----------|-----------------------|
+| macOS | `~/bin` |
+| Linux | `~/.local/bin` (XDG standard) |
+
+## Custom install path
+
+You can override the default with the `--bin-dir` flag or the `CLOTHER_BIN` environment variable.
+
+<CodeGroup>
+
+```bash --bin-dir flag
+curl -fsSL https://raw.githubusercontent.com/jolehuit/clother/main/scripts/install.sh | bash -s -- --bin-dir ~/.local/bin
+```
+
+```bash CLOTHER_BIN env var
+export CLOTHER_BIN="$HOME/.local/bin"
+curl -fsSL https://raw.githubusercontent.com/jolehuit/clother/main/scripts/install.sh | bash
+```
+
+</CodeGroup>
+
+## Adding the bin directory to PATH
+
+If `clother` is not found after installation, add the bin directory to your shell's PATH.
+
+<CodeGroup>
+
+```bash macOS / zsh (~/.zshrc)
+export PATH="$HOME/bin:$PATH"
+```
+
+```bash Linux / zsh or bash (~/.zshrc or ~/.bashrc)
+export PATH="$HOME/.local/bin:$PATH"
+```
+
+</CodeGroup>
+
+Reload your shell (`source ~/.zshrc` or open a new terminal) for the change to take effect.
+
+## Updating
+
+To update Clother in place and refresh all installed launchers:
+
+```bash
+clother install
+```
+
+## Uninstalling
+
+```bash
+clother uninstall
+```
+
+This removes the `clother` binary, all `clother-*` symlinks, and the `claude` shim from your bin directory.

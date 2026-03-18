@@ -1,0 +1,37 @@
+---
+title: "Updating Clother"
+description: "How to update Clother to the latest version and refresh all installed launchers."
+---
+
+Updating Clother uses the same command as the initial install:
+
+```bash
+clother install
+```
+
+## What it does
+
+Running `clother install` performs the following in place:
+
+- Updates the `clother` binary in your bin directory
+- Refreshes all `clother-*` provider launcher symlinks
+- Refreshes the `claude` shim symlink used for resume compatibility
+- Normalizes any legacy configuration and secrets files
+
+When it completes, you will see a confirmation line showing where Clother is installed:
+
+```text
+installed Clother to /home/yourname/.local/bin
+```
+
+<Note>
+  If you installed Clother to a custom directory using `--bin-dir` or the `CLOTHER_BIN` environment variable, `clother install` will update that same directory.
+</Note>
+
+## Checking the current version
+
+After updating, run the following to confirm the installation and see the active bin directory:
+
+```bash
+clother status
+```

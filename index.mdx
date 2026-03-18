@@ -1,97 +1,120 @@
 ---
-title: "Introduction"
-description: "Welcome to the new home for your documentation"
+title: "Clother — One CLI, Every LLM Provider"
+description: "Switch between Claude Code–compatible LLM providers instantly with simple clother-* commands. No manual env var juggling."
+mode: "custom"
 ---
 
-## Setting up
+<div style={{background: "#ffffff", minHeight: "100vh"}}>
 
-Get your documentation site up and running in minutes.
+{/* Hero */}
+<div style={{background: "linear-gradient(135deg, #94cb04 0%, #6fa002 100%)", padding: "80px 24px 64px", textAlign: "center"}}>
+  <div style={{maxWidth: "800px", margin: "0 auto"}}>
+    <div style={{display: "inline-block", background: "rgba(255,255,255,0.15)", borderRadius: "20px", padding: "6px 16px", marginBottom: "24px", fontSize: "14px", color: "#fff", fontWeight: 600}}>
+      Open Source · MIT License · Go
+    </div>
+    <h1 style={{fontSize: "52px", fontWeight: 700, color: "#fff", margin: "0 0 20px", lineHeight: 1.1, fontFamily: "Inter, sans-serif"}}>
+      One CLI,<br/>Every LLM Provider
+    </h1>
+    <p style={{fontSize: "20px", color: "rgba(255,255,255,0.9)", marginBottom: "40px", lineHeight: 1.6, fontFamily: "Inter, sans-serif"}}>
+      Clother gives you instant access to 20+ Claude Code–compatible providers — cloud, local, and China endpoints — all from a single binary with zero configuration friction.
+    </p>
+    <div style={{display: "flex", gap: "12px", justifyContent: "center", flexWrap: "wrap"}}>
+      <a href="/installation" style={{background: "#fff", color: "#94cb04", padding: "14px 28px", borderRadius: "6px", fontWeight: 700, textDecoration: "none", fontSize: "16px", fontFamily: "Inter, sans-serif"}}>
+        Get Started
+      </a>
+      <a href="/reference/commands" style={{background: "transparent", color: "#fff", padding: "14px 28px", borderRadius: "6px", fontWeight: 600, textDecoration: "none", fontSize: "16px", border: "2px solid rgba(255,255,255,0.6)", fontFamily: "Inter, sans-serif"}}>
+        Command Reference
+      </a>
+    </div>
+  </div>
+</div>
 
-<Card
-  title="Start here"
-  icon="rocket"
-  href="/quickstart"
-  horizontal
->
-  Follow our three step quickstart guide.
-</Card>
+{/* Quick install strip */}
+<div style={{background: "#1a1a1a", padding: "20px 24px", textAlign: "center"}}>
+  <code style={{color: "#94cb04", fontFamily: "monospace", fontSize: "15px"}}>
+    curl -fsSL https://raw.githubusercontent.com/jolehuit/clother/main/scripts/install.sh | bash
+  </code>
+</div>
 
-## Make it yours
+{/* Feature cards */}
+<div style={{maxWidth: "1100px", margin: "64px auto", padding: "0 24px"}}>
+  <h2 style={{textAlign: "center", fontSize: "32px", fontWeight: 700, color: "#1a1a1a", marginBottom: "48px", fontFamily: "Inter, sans-serif"}}>
+    Everything you need to switch providers instantly
+  </h2>
 
-Design a docs site that looks great and empowers your users.
-
-<Columns cols={2}>
-  <Card
-    title="Edit locally"
-    icon="pen-to-square"
-    href="/development"
-  >
-    Edit your docs locally and preview them in real time.
+<CardGroup cols={3}>
+  <Card title="20+ Providers Built-In" icon="server">
+    Cloud providers, China endpoints, and local backends — all configured out of the box. No manual endpoint setup.
   </Card>
-  <Card
-    title="Customize your site"
-    icon="palette"
-    href="/essentials/settings"
-  >
-    Customize the design and colors of your site to match your brand.
+  <Card title="Instant Switching" icon="bolt">
+    Run `clother-zai`, `clother-kimi`, or `clother-ollama` — each launcher sets the right env vars and launches Claude automatically.
   </Card>
-    <Card
-    title="Set up navigation"
-    icon="map"
-    href="/essentials/navigation"
-  >
-    Organize your docs to help users find what they need and succeed with your product.
+  <Card title="OpenRouter Support" icon="network-wired">
+    Access 100+ models via OpenRouter with custom aliases. Create a `clother-or-<alias>` launcher for any model.
   </Card>
-  <Card
-    title="API documentation"
-    icon="terminal"
-    href="/api-reference/introduction"
-  >
-    Auto-generate API documentation from OpenAPI specifications.
+  <Card title="Session Resume" icon="rotate-right">
+    Resume sessions across providers seamlessly. Clother sanitizes incompatible thinking blocks automatically when switching.
   </Card>
-</Columns>
+  <Card title="Secure Secrets" icon="lock">
+    API keys stored in `~/.local/share/clother/secrets.env` with `chmod 600` permissions. Never exposed in shell history.
+  </Card>
+  <Card title="VS Code Integration" icon="code">
+    Works with the official Claude Code extension via `claudeProcessWrapper`. Set it once and switch providers without leaving VS Code.
+  </Card>
+</CardGroup>
 
-## Create beautiful pages
+</div>
 
-Everything you need to create world-class documentation.
+{/* Provider quick reference */}
+<div style={{background: "#f9f9f9", padding: "64px 24px"}}>
+  <div style={{maxWidth: "1100px", margin: "0 auto"}}>
+    <h2 style={{fontSize: "28px", fontWeight: 700, color: "#1a1a1a", marginBottom: "32px", fontFamily: "Inter, sans-serif"}}>
+      Switch providers in seconds
+    </h2>
 
-<Columns cols={2}>
-  <Card
-    title="Write with MDX"
-    icon="pen-fancy"
-    href="/essentials/markdown"
-  >
-    Use MDX to style your docs pages.
-  </Card>
-  <Card
-    title="Code samples"
-    icon="code"
-    href="/essentials/code"
-  >
-    Add sample code to demonstrate how to use your product.
-  </Card>
-  <Card
-    title="Images"
-    icon="image"
-    href="/essentials/images"
-  >
-    Display images and other media.
-  </Card>
-  <Card
-    title="Reusable snippets"
-    icon="recycle"
-    href="/essentials/reusable-snippets"
-  >
-    Write once and reuse across your docs.
-  </Card>
-</Columns>
+```bash
+# Cloud providers
+clother-native                          # Your Claude Pro/Max/Team subscription
+clother-zai                             # Z.AI (GLM-5)
+clother-kimi                            # Kimi (kimi-k2.5)
+clother-deepseek                        # DeepSeek (deepseek-chat)
 
-## Need inspiration?
+# OpenRouter — 100+ models
+clother config openrouter               # Set API key and add model aliases
+clother-or-kimi-k25                     # Use your aliased model
 
-<Card
-  title="See complete examples"
-  icon="stars"
-  href="https://mintlify.com/customers"
->
-  Browse our showcase of exceptional documentation sites.
-</Card>
+# Local — no API key required
+clother-ollama --model qwen3-coder      # Ollama
+clother-lmstudio --model <model>        # LM Studio
+
+# Skip permission prompts
+clother-zai --yolo
+```
+
+  </div>
+</div>
+
+{/* Get started section */}
+<div style={{maxWidth: "900px", margin: "64px auto", padding: "0 24px"}}>
+  <h2 style={{fontSize: "28px", fontWeight: 700, color: "#1a1a1a", marginBottom: "32px", fontFamily: "Inter, sans-serif"}}>
+    Ready to get started?
+  </h2>
+
+<CardGroup cols={2}>
+  <Card title="Installation" icon="download" href="/installation">
+    Install Clother on macOS, Linux, or WSL in under a minute.
+  </Card>
+  <Card title="Quickstart" icon="rocket" href="/quickstart">
+    Configure your first provider and run your first session.
+  </Card>
+  <Card title="Provider Reference" icon="list" href="/providers/cloud">
+    Browse all built-in providers, their default models, and API key requirements.
+  </Card>
+  <Card title="Command Reference" icon="terminal" href="/reference/commands">
+    Full reference for every `clother` command and flag.
+  </Card>
+</CardGroup>
+
+</div>
+
+</div>

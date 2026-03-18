@@ -1,0 +1,96 @@
+---
+title: Local providers
+description: Run models locally with Ollama, LM Studio, or llama.cpp — no API key required.
+---
+
+Clother supports three local inference backends. No API key is needed for any of them. You must always pass `--model` because local providers have no built-in default model.
+
+| Launcher | Backend | Port |
+|---|---|---|
+| `clother-ollama` | Ollama | 11434 |
+| `clother-lmstudio` | LM Studio | 1234 |
+| `clother-llamacpp` | llama.cpp | 8000 |
+
+---
+
+## Ollama
+
+[Ollama](https://ollama.com) manages and serves local models with a simple CLI.
+
+<Steps>
+  <Step title="Install Ollama">
+    Download and install Ollama from [ollama.com](https://ollama.com).
+  </Step>
+  <Step title="Pull a model">
+    ```bash
+    ollama pull qwen3-coder
+    ```
+  </Step>
+  <Step title="Start the server">
+    ```bash
+    ollama serve
+    ```
+
+    Ollama listens on port `11434` by default.
+  </Step>
+  <Step title="Launch with Clother">
+    ```bash
+    clother-ollama --model qwen3-coder
+    ```
+  </Step>
+</Steps>
+
+<Note>The auth token is set to the literal string `ollama` by Clother. You do not need to configure an API key.</Note>
+
+---
+
+## LM Studio
+
+[LM Studio](https://lmstudio.ai) provides a desktop GUI for downloading and running models locally.
+
+<Steps>
+  <Step title="Install LM Studio">
+    Download and install LM Studio from [lmstudio.ai/download](https://lmstudio.ai/download).
+  </Step>
+  <Step title="Load a model">
+    Open LM Studio and download a model from its built-in model browser. Once downloaded, load it.
+  </Step>
+  <Step title="Start the local server">
+    In LM Studio, navigate to the **Local Server** tab and start the server on port `1234`.
+  </Step>
+  <Step title="Launch with Clother">
+    ```bash
+    clother-lmstudio --model <model-name>
+    ```
+
+    Replace `<model-name>` with the model identifier shown in LM Studio.
+  </Step>
+</Steps>
+
+<Note>The auth token is set to the literal string `lmstudio` by Clother. You do not need to configure an API key.</Note>
+
+---
+
+## llama.cpp
+
+[llama.cpp](https://github.com/ggml-org/llama.cpp) is a high-performance inference engine for GGUF models.
+
+<Steps>
+  <Step title="Build llama.cpp">
+    Clone and build the project following the instructions at [github.com/ggml-org/llama.cpp](https://github.com/ggml-org/llama.cpp).
+  </Step>
+  <Step title="Start the server">
+    ```bash
+    ./llama-server --model model.gguf --port 8000 --jinja
+    ```
+
+    Replace `model.gguf` with the path to your model file. The `--jinja` flag is required for correct tool-calling support.
+  </Step>
+  <Step title="Launch with Clother">
+    ```bash
+    clother-llamacpp --model <model-name>
+    ```
+  </Step>
+</Steps>
+
+<Note>llama.cpp uses `auth_mode: none`. No authentication token is sent.</Note>

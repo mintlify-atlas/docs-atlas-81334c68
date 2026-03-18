@@ -1,0 +1,65 @@
+---
+title: 'Introduction'
+description: 'Clother is a single Go binary that proxies Claude Code sessions to multiple Anthropic-compatible LLM providers — no manual env var juggling required.'
+---
+
+Clother gives you one install and one command pattern to switch between Claude Code providers instantly. Instead of editing environment variables, endpoints, and model names by hand every time you want to try a different backend, Clother handles all of that at launch time.
+
+## The problem
+
+Switching Claude Code providers normally means:
+
+- Setting `ANTHROPIC_BASE_URL` to the new endpoint
+- Swapping `ANTHROPIC_AUTH_TOKEN` for the right API key
+- Remembering (or looking up) the correct model name
+- Updating any launcher scripts or shell aliases you rely on
+
+Do this often enough across cloud providers, China endpoints, local backends, and OpenRouter, and it becomes friction that slows you down.
+
+## How Clother solves it
+
+Clother is a single Go binary. At install time it creates a `clother-<provider>` symlink for every supported provider. At runtime it reads the symlink name, loads the matching profile and API key, sets the required environment variables, then hands off to the real Claude binary — transparently.
+
+For example, launching `clother-zai` is equivalent to:
+
+```bash
+export ANTHROPIC_BASE_URL="https://api.z.ai/api/anthropic"
+export ANTHROPIC_AUTH_TOKEN="$ZAI_API_KEY"
+exec /path/to/the/real/claude "$@"
+```
+
+You never touch those variables yourself.
+
+## Key features
+
+<CardGroup cols={2}>
+  <Card title="One install, many providers" icon="layer-group">
+    A single binary manages every provider. Add or switch providers without reinstalling anything.
+  </Card>
+  <Card title="Provider-aware launchers" icon="terminal">
+    Each provider gets its own `clother-<provider>` command. Run them side by side, script them, or wire them into your editor.
+  </Card>
+  <Card title="Resume compatibility" icon="rotate-right">
+    Clother preserves the `claude --resume` workflow across providers, including cross-provider session handoff.
+  </Card>
+  <Card title="Local backend support" icon="server">
+    Ollama, LM Studio, and llama.cpp work out of the box — no API key required.
+  </Card>
+  <Card title="OpenRouter access" icon="shuffle">
+    Route to 100+ models through OpenRouter using custom aliases and the `clother-or-<alias>` pattern.
+  </Card>
+  <Card title="Secure secret storage" icon="lock">
+    API keys are stored in `~/.local/share/clother/secrets.env` with permissions set to `600`.
+  </Card>
+</CardGroup>
+
+## Supported provider categories
+
+- **Cloud** — Anthropic (native), Z.AI, MiniMax, Kimi, Moonshot AI, DeepSeek, Xiaomi MiMo, Alibaba Coding Plan
+- **China endpoints** — Z.AI China, MiniMax China, Volcengine, Alibaba China
+- **Local backends** — Ollama (port 11434), LM Studio (port 1234), llama.cpp (port 8000)
+- **OpenRouter** — Any model available on OpenRouter, accessed via custom aliases
+
+## Next step
+
+Ready to install? Head to [Installation](/installation).
