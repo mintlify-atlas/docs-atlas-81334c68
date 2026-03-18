@@ -1,0 +1,80 @@
+{
+  "projectType": "cli-tool",
+  "projectName": "Clother",
+  "projectDescription": "A single Go binary that lets you switch between Claude Code–compatible LLM providers instantly using simple clother-* launcher commands.",
+  "theme": "mint",
+  "primaryColor": "#94cb04",
+  "lightColor": "#545454",
+  "darkColor": null,
+  "navigation": {
+    "tabs": [
+      {
+        "tab": "Documentation",
+        "groups": [
+          {
+            "group": "Get Started",
+            "pages": ["introduction", "installation", "quickstart"]
+          },
+          {
+            "group": "Providers",
+            "pages": [
+              "providers/cloud",
+              "providers/openrouter",
+              "providers/china",
+              "providers/local",
+              "providers/custom"
+            ]
+          },
+          {
+            "group": "Configuration",
+            "pages": ["configuration/overview", "configuration/secrets", "configuration/models"]
+          },
+          {
+            "group": "Guides",
+            "pages": ["guides/vscode-integration", "guides/resume", "guides/updating"]
+          },
+          {
+            "group": "Reference",
+            "pages": ["reference/commands", "reference/troubleshooting", "reference/platform-support"]
+          }
+        ]
+      }
+    ]
+  },
+  "keyFeatures": [
+    "Instant provider switching with clother-* launcher commands",
+    "20+ built-in providers including cloud, China endpoints, and local backends",
+    "OpenRouter support for 100+ models via custom aliases",
+    "Session resume compatibility across providers",
+    "Secure API key storage (chmod 600) in ~/.local/share/clother/secrets.env",
+    "VS Code Claude Code extension integration via claudeProcessWrapper",
+    "--yolo shorthand for --dangerously-skip-permissions",
+    "Custom provider support via clother config custom"
+  ],
+  "publicApiSurface": [
+    "clother config [provider]",
+    "clother list",
+    "clother info <provider>",
+    "clother test",
+    "clother status",
+    "clother install",
+    "clother uninstall",
+    "clother-native",
+    "clother-zai",
+    "clother-zai-cn",
+    "clother-minimax",
+    "clother-minimax-cn",
+    "clother-kimi",
+    "clother-moonshot",
+    "clother-deepseek",
+    "clother-mimo",
+    "clother-alibaba",
+    "clother-alibaba-us",
+    "clother-alibaba-cn",
+    "clother-ve",
+    "clother-ollama",
+    "clother-lmstudio",
+    "clother-llamacpp",
+    "clother-or-<alias>"
+  ]
+}
